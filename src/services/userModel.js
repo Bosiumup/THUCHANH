@@ -32,28 +32,28 @@ let modelHashPassword = async (password) => {
     return await bcrypt.hashSync(password, salt);
 };
 
-// let modelDeleteUserById = async (id) => {
-//     return await pool.query("DELETE FROM users WHERE id = ?", [id]);
-// };
+let modelDeleteUserById = async (id) => {
+    return await pool.query("DELETE FROM users WHERE id = ?", [id]);
+};
 
-// let modelGetUserById = async (id) => {
-//     let [rows, fields] = await pool.query("SELECT * FROM users WHERE id = ?", [
-//         id,
-//     ]);
-//     return rows[0];
-// };
+let modelGetUserById = async (id) => {
+    let [rows, fields] = await pool.query("SELECT * FROM users WHERE id = ?", [
+        id,
+    ]);
+    return rows[0];
+};
 
-// let modelUpdateUserById = async (id, fullname, address) => {
-//     return await pool.query(
-//         "UPDATE users SET fullname = ?, address = ? WHERE id = ?",
-//         [fullname, address, id]
-//     );
-// };
+let modelUpdateUserById = async (id, fullname, address) => {
+    return await pool.query(
+        "UPDATE users SET fullname = ?, address = ? WHERE id = ?",
+        [fullname, address, id]
+    );
+};
 
 export default {
     modelGetAllUser,
     modelCreateNewUser,
-    // modelDeleteUserById,
-    // modelGetUserById,
-    // modelUpdateUserById,
+    modelDeleteUserById,
+    modelGetUserById,
+    modelUpdateUserById,
 };

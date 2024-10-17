@@ -18,11 +18,11 @@ const initRoutes = (app) => {
             errorMessage: null,
         });
     });
-    // router.get("/edit-user/:id", userController.controllerEditUserById);
+    router.get("/edit-user/:id", userController.controllerEditUserById);
 
     router.post("/create-new-user", userController.controllerCreateNewUser);
-    // router.post("/delete-user", userController.controllerDeleteUserById);
-    // router.post("/update-user", userController.controllerUpdateUserById);
+    router.post("/delete-user", userController.controllerDeleteUserById);
+    router.post("/update-user", userController.controllerUpdateUserById);
 
     app.use("/", router);
 };

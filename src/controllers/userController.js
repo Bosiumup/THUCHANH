@@ -30,32 +30,32 @@ let controllerCreateNewUser = async (req, res) => {
     return res.redirect("/list-user?message=Tạo người dùng thành công.");
 };
 
-// let controllerDeleteUserById = async (req, res) => {
-//     let { userId } = req.body;
-//     await userModel.modelDeleteUserById(userId);
-//     // Chuyển hướng với thông báo thành công
-//     return res.redirect("/list-user?message=Xóa người dùng thành công.");
-// };
+let controllerDeleteUserById = async (req, res) => {
+    let { userId } = req.body;
+    await userModel.modelDeleteUserById(userId);
+    // Chuyển hướng với thông báo thành công
+    return res.redirect("/list-user?message=Xóa người dùng thành công.");
+};
 
-// let controllerEditUserById = async (req, res) => {
-//     let { id } = req.params;
-//     let dataUser = await userModel.modelGetUserById(id);
-//     res.render("editUser", {
-//         data: { title: "Cập nhật người dùng", user: dataUser },
-//     });
-// };
+let controllerEditUserById = async (req, res) => {
+    let { id } = req.params;
+    let dataUser = await userModel.modelGetUserById(id);
+    res.render("editUser", {
+        data: { title: "Cập nhật người dùng", user: dataUser },
+    });
+};
 
-// let controllerUpdateUserById = async (req, res) => {
-//     let { id, fullname, address } = req.body;
-//     await userModel.modelUpdateUserById(id, fullname, address);
-//     // Chuyển hướng với thông báo thành công
-//     return res.redirect("/list-user?message=Cập nhật người dùng thành công.");
-// };
+let controllerUpdateUserById = async (req, res) => {
+    let { id, fullname, address } = req.body;
+    await userModel.modelUpdateUserById(id, fullname, address);
+    // Chuyển hướng với thông báo thành công
+    return res.redirect("/list-user?message=Cập nhật người dùng thành công.");
+};
 
 export default {
     controllerGetAllUser,
     controllerCreateNewUser,
-    // controllerDeleteUserById,
-    // controllerEditUserById,
-    // controllerUpdateUserById,
+    controllerDeleteUserById,
+    controllerEditUserById,
+    controllerUpdateUserById,
 };
