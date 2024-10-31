@@ -2,7 +2,9 @@ import pool from "../config/connectDB";
 import bcrypt from "bcryptjs";
 
 let modelGetAllUser = async () => {
-    let [rows, fields] = await pool.query("SELECT * FROM users");
+    let [rows, fields] = await pool.query(
+        "SELECT * FROM users WHERE role = 'user'"
+    );
     // trả về kết quả
     return rows;
 };

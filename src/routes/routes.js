@@ -3,6 +3,8 @@ import homeController from "../controllers/HomeController";
 import aboutController from "../controllers/AboutController";
 import contactController from "../controllers/ContactController";
 import userController from "../controllers/UserController";
+import { checkAuth, checkAdmin, checkUser } from "../middleware/authMiddleware";
+
 const router = express.Router();
 
 const initRoutes = (app) => {

@@ -28,6 +28,7 @@
                             <th>Tài khoản</th>
                             <th>Họ tên</th>
                             <th>Địa chỉ</th>
+                            <th>Quyền</th>
                             <th>Cài đặt</th>
                         </tr>
                     </thead>
@@ -38,6 +39,7 @@
                             <td><%= data.users[i].username %></td>
                             <td><%= data.users[i].fullname %></td>
                             <td><%= data.users[i].address %></td>
+                            <td><%= data.users[i].role %></td>
                             <td class="d-flex">
                                 <a
                                     href="/edit-user/<%= data.users[i].id %>"
