@@ -2,7 +2,6 @@ import express from "express";
 import dotenv from "dotenv";
 import viewEngine from "./config/viewEngine";
 import initRoutes from "./routes/routes";
-import authRoutes from "./routes/auth";
 import bodyParser from "body-parser";
 import session from "express-session";
 import RedisStore from "connect-redis";
@@ -14,8 +13,6 @@ const port = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 viewEngine(app);
-initRoutes(app);
-authRoutes(app);
 // Initialize client.
 let redisClient = createClient();
 redisClient.connect().catch(console.error);
@@ -35,6 +32,8 @@ app.use(
         secret: "keyboard cat",
     })
 );
+
+initRoutes(app);
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

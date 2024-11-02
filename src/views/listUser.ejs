@@ -15,11 +15,13 @@
         <%- include('header') %>
         <div class="main-content">
             <div class="container mt-5">
-                <h2>Danh sách tài khoản</h2>
+                <h2>Danh sách tài khoản người dùng</h2>
                 <div class="mb-3 text-end">
+                    <% if (session && session.role === "admin") { %>
                     <a href="/create-user" class="btn btn-primary"
                         >Thêm mới người dùng</a
                     >
+                    <% } else { %> <% } %>
                 </div>
                 <table class="table table-striped table-hover">
                     <thead class="table-light">
@@ -28,8 +30,11 @@
                             <th>Tài khoản</th>
                             <th>Họ tên</th>
                             <th>Địa chỉ</th>
-                            <th>Quyền</th>
+                            <th>Email</th>
+                            <th>Vai trò</th>
+                            <% if (session && session.role === "admin") { %>
                             <th>Cài đặt</th>
+                            <% } else { %> <% } %>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,7 +44,9 @@
                             <td><%= data.users[i].username %></td>
                             <td><%= data.users[i].fullname %></td>
                             <td><%= data.users[i].address %></td>
+                            <td><%= data.users[i].email %></td>
                             <td><%= data.users[i].role %></td>
+                            <% if (session && session.role === "admin") { %>
                             <td class="d-flex">
                                 <a
                                     href="/edit-user/<%= data.users[i].id %>"
@@ -60,6 +67,7 @@
                                     </button>
                                 </form>
                             </td>
+                            <% } else { %> <% } %>
                         </tr>
                         <% } %>
                     </tbody>

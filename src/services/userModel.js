@@ -1,24 +1,25 @@
 import pool from "../config/connectDB";
 import bcrypt from "bcryptjs";
 
+let authUser = async (username, password) => {
+    let user = await getUsername(username);
+    if (!user) {
+        return { success: false, errMessage: "Tài khoản không tồn tại." };
+    }
+    let match = await bcrypt.compare(password, user.password);
+    if (match) {
+        delete user.password;
+        return { success: true, user: user };
+    } else {
+        return { success: false, errMessage: "Mật khẩu không đúng." };
+    }
+};
+
 let modelGetAllUser = async () => {
     let [rows, fields] = await pool.query(
         "SELECT * FROM users WHERE role = 'user'"
     );
-    // trả về kết quả
     return rows;
-};
-
-let modelCreateNewUser = async (username, password, fullname, address) => {
-    let checkUsername = await getUsername(username);
-    if (checkUsername.length > 0) {
-        return false;
-    }
-    let hashPassword = await modelHashPassword(password);
-    return await pool.query(
-        "INSERT INTO users (username, password, fullname, address) VALUES (?, ?, ?, ?)",
-        [username, hashPassword, fullname, address]
-    );
 };
 
 let getUsername = async (username) => {
@@ -26,12 +27,24 @@ let getUsername = async (username) => {
         "SELECT * FROM users WHERE username = ?",
         [username]
     );
-    return rows;
+    return rows.length > 0 ? rows[0] : null;
 };
 
 let salt = bcrypt.genSaltSync(10);
 let modelHashPassword = async (password) => {
     return await bcrypt.hashSync(password, salt);
+};
+
+let modelCreateNewUser = async (username, password) => {
+    let checkUsername = await getUsername(username);
+    if (checkUsername) {
+        return false;
+    }
+    let hashPassword = await modelHashPassword(password);
+    return await pool.query(
+        "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+        [username, hashPassword, "user"]
+    );
 };
 
 let modelDeleteUserById = async (id) => {
@@ -45,10 +58,10 @@ let modelGetUserById = async (id) => {
     return rows[0];
 };
 
-let modelUpdateUserById = async (id, fullname, address) => {
+let modelUpdateUserById = async (id, fullname, address, email) => {
     return await pool.query(
-        "UPDATE users SET fullname = ?, address = ? WHERE id = ?",
-        [fullname, address, id]
+        "UPDATE users SET fullname = ?, address = ?, email = ? WHERE id = ?",
+        [fullname, address, email, id]
     );
 };
 
@@ -58,4 +71,6 @@ export default {
     modelDeleteUserById,
     modelGetUserById,
     modelUpdateUserById,
+    getUsername,
+    authUser,
 };

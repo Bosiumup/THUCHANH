@@ -1,5 +1,5 @@
 let aboutController = (req, res) => {
-    res.render("about");
+    return res.render("about", { session: req.session.user });
 };
 
 export default aboutController;

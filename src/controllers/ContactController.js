@@ -1,5 +1,5 @@
 let contactController = (req, res) => {
-    res.render("contact");
+    return res.render("contact", { session: req.session.user });
 };
 
 export default contactController;

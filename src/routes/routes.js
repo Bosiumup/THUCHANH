@@ -3,28 +3,84 @@ import homeController from "../controllers/HomeController";
 import aboutController from "../controllers/AboutController";
 import contactController from "../controllers/ContactController";
 import userController from "../controllers/UserController";
-import { checkAuth, checkAdmin, checkUser } from "../middleware/authMiddleware";
+import authMiddleware from "../middleware/authMiddleware";
 
 const router = express.Router();
 
 const initRoutes = (app) => {
+    // -------------- Website routes
+
+    // trang chủ
     router.get("/", homeController);
+
+    // trang dashboard
+    router.get(
+        "/dashboard",
+        authMiddleware.checkAdmin,
+        userController.dashboardGet
+    );
+
     router.get("/about", aboutController);
     router.get("/contact", contactController);
 
-    // User
-    router.get("/list-user", userController.controllerGetAllUser);
-    router.get("/create-user", (req, res) => {
-        res.render("createUser", {
-            title: "Tạo người dùng",
-            errorMessage: null,
-        });
-    });
-    router.get("/edit-user/:id", userController.controllerEditUserById);
+    // trang đăng nhập
+    router.get(
+        "/login",
+        authMiddleware.checkNotLoggedIn,
+        userController.loginGet
+    );
 
+    // trang đăng ký và tạo người dùng
+    router.get(
+        "/create-user",
+        authMiddleware.checkAdminOrUser,
+        userController.createUserGet
+    );
+
+    // trang sửa thông tin người dùng và cập nhật thông tin người dùng
+    router.get(
+        "/edit-user/:id",
+        authMiddleware.checkAdminOrUser,
+        userController.controllerEditUserById
+    );
+
+    // -------------- API routes
+
+    // trả về danh sách tài khoản
+    router.get("/list-user", userController.controllerGetAllUser);
+
+    // trả về thông tin tài khoản cụ thể
+    router.get(
+        "/detail-user",
+        authMiddleware.checkUser,
+        userController.detailUserGet
+    );
+    // tạo tài khoản
     router.post("/create-new-user", userController.controllerCreateNewUser);
-    router.post("/delete-user", userController.controllerDeleteUserById);
-    router.post("/update-user", userController.controllerUpdateUserById);
+
+    // xóa tài khoản
+    router.post(
+        "/delete-user",
+        authMiddleware.checkAdminOrUser,
+        userController.controllerDeleteUserById
+    );
+
+    // sửa tài khoản
+    router.post(
+        "/update-user",
+        authMiddleware.checkAdminOrUser,
+        userController.controllerUpdateUserById
+    );
+
+    // đăng nhập
+    router.post("/loginPost", userController.loginPost);
+
+    // đăng xuất
+    router.get(
+        "/logout",
+        authMiddleware.checkAdminOrUser,
+        userController.logout
+    );
 
     app.use("/", router);
 };

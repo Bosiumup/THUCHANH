@@ -13,7 +13,7 @@
     </head>
     <body>
         <div class="container mt-5">
-            <h2 class="mb-3 text-center">Tạo người dùng</h2>
+            <h2 class="mb-3 text-center"><%= title %></h2>
             <form action="/create-new-user" method="POST">
                 <div class="mb-3">
                     <label for="username" class="form-label">Tài khoản</label>
@@ -35,28 +35,12 @@
                         required
                     />
                 </div>
-                <div class="mb-3">
-                    <label for="fullname" class="form-label">Họ tên</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="fullname"
-                        name="fullname"
-                        required
-                    />
-                </div>
-                <div class="mb-3">
-                    <label for="address" class="form-label">Địa chỉ</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="address"
-                        name="address"
-                        required
-                    />
-                </div>
                 <button type="submit" class="btn btn-primary">Tạo</button>
+                <% if (session && session.role === "admin") { %>
                 <a href="/list-user" class="btn btn-secondary">Hủy</a>
+                <% } else { %>
+                <a href="/login" class="btn btn-secondary">Đăng nhập</a>
+                <% } %>
             </form>
 
             <!-- Hiển thị thông báo -->
