@@ -1,5 +1,6 @@
 import pool from "../config/connectDB";
 import bcrypt from "bcryptjs";
+import User from "../models/User";
 
 let authUser = async (username, password) => {
     let user = await getUsername(username);
@@ -22,16 +23,20 @@ let modelGetAllUser = async () => {
     return rows;
 };
 
+// let getUsername = async (username) => {
+//     let [rows, fields] = await pool.query(
+//         "SELECT * FROM users WHERE username = ?",
+//         [username]
+//     );
+//     return rows.length > 0 ? rows[0] : null;
+// };
+
 let getUsername = async (username) => {
-    let [rows, fields] = await pool.query(
-        "SELECT * FROM users WHERE username = ?",
-        [username]
-    );
-    return rows.length > 0 ? rows[0] : null;
+    return await User.findOne({ where: { username } });
 };
 
-let salt = bcrypt.genSaltSync(10);
 let modelHashPassword = async (password) => {
+    let salt = bcrypt.genSaltSync(10);
     return await bcrypt.hashSync(password, salt);
 };
 
@@ -41,14 +46,32 @@ let modelCreateNewUser = async (username, password) => {
         return false;
     }
     let hashPassword = await modelHashPassword(password);
-    return await pool.query(
-        "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
-        [username, hashPassword, "user"]
-    );
+
+    // return await pool.query(
+    //     "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+    //     [username, hashPassword, "user"]
+    // );
+
+    return await User.create({
+        username: username,
+        password: hashPassword,
+        fullname: "",
+        address: "",
+        email: "",
+        role: "user",
+    });
 };
 
+// let modelDeleteUserById = async (id) => {
+//     return await pool.query("DELETE FROM users WHERE id = ?", [id]);
+// };
+
 let modelDeleteUserById = async (id) => {
-    return await pool.query("DELETE FROM users WHERE id = ?", [id]);
+    return await User.destroy({
+        where: {
+            id: id,
+        },
+    });
 };
 
 let modelGetUserById = async (id) => {

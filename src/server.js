@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import session from "express-session";
 import RedisStore from "connect-redis";
 import { createClient } from "redis";
+import sequelize from "./config/sequelizeDB";
 
 const app = express();
 dotenv.config();
@@ -32,6 +33,19 @@ app.use(
         secret: "keyboard cat",
     })
 );
+
+const initDatabase = async () => {
+    try {
+        await sequelize.authenticate(); // Kiểm tra kết nối
+        console.log("Kết nối tới cơ sở dữ liệu thành công!");
+
+        await sequelize.sync(); // Đồng bộ hóa các mô hình với cơ sở dữ liệu
+        console.log("Các mô hình đã được đồng bộ hóa!");
+    } catch (error) {
+        console.error("Lỗi kết nối tới cơ sở dữ liệu:", error);
+    }
+};
+initDatabase();
 
 initRoutes(app);
 
