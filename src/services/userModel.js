@@ -31,6 +31,7 @@ let modelGetAllUser = async () => {
 //     return rows.length > 0 ? rows[0] : null;
 // };
 
+// sequelize get username
 let getUsername = async (username) => {
     return await User.findOne({ where: { username } });
 };
@@ -52,6 +53,7 @@ let modelCreateNewUser = async (username, password) => {
     //     [username, hashPassword, "user"]
     // );
 
+    // sequelize create
     return await User.create({
         username: username,
         password: hashPassword,
@@ -66,6 +68,7 @@ let modelCreateNewUser = async (username, password) => {
 //     return await pool.query("DELETE FROM users WHERE id = ?", [id]);
 // };
 
+// sequelize delete
 let modelDeleteUserById = async (id) => {
     return await User.destroy({
         where: {
