@@ -1,8 +1,8 @@
 import userModel from "../services/userModel";
-
+import generateToken from "../utils/jwt";
 let apiDetailUserGet = async (req, res) => {
-    let id = req.params.id;
     try {
+        let id = req.params.id;
         let dataUser = await userModel.modelGetUserById(id);
         if (dataUser) {
             return res.json({
@@ -32,15 +32,12 @@ let apiLoginPost = async (req, res) => {
         let result = await userModel.authUser(username, password);
         if (result.success) {
             let user = result.user;
-            req.session.user = user;
+            let token = generateToken({ id: user.id, role: user.role });
             return res.json({
                 success: true,
                 errCode: 1,
-                message:
-                    user.role === "admin"
-                        ? "Đăng nhập thành công với quyền admin."
-                        : "Đăng nhập thành công với quyền user.",
-                user,
+                errMessage: "Đăng nhập thành công.",
+                token,
             });
         } else {
             return res.json({

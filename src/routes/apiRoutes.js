@@ -1,5 +1,6 @@
 import express from "express";
 import apiUserController from "../controllers/apiUserController";
+import apiProductController from "../controllers/apiProductController";
 
 const router = express.Router();
 
@@ -22,6 +23,18 @@ const initApiRoutes = (app) => {
     router.post("/api/delete-user", apiUserController.apiDeleteUserById);
     // Sửa tài khoản
     router.post("/api/update-user", apiUserController.apiUpdateUserById);
+
+    // API sản phẩm
+
+    // Hiển thị nhóm
+    router.get("/api/groupProduct", apiProductController.apiGetGroupProduct);
+    // Hiển thị danh sách các sản phẩm
+    router.get("/api/listProduct", apiProductController.apiGetAllProduct);
+    // Hiển thị chi tiết sản phẩm cụ thể
+    router.get(
+        "/api/detailProduct/:masp",
+        apiProductController.apiGetDetailProduct
+    );
 
     app.use("/", router);
 };

@@ -8,8 +8,10 @@ import session from "express-session";
 import RedisStore from "connect-redis";
 import { createClient } from "redis";
 import sequelize from "./config/sequelizeDB";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 dotenv.config();
 const port = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,8 +42,8 @@ const initDatabase = async () => {
         await sequelize.authenticate(); // Kiểm tra kết nối
         console.log("Kết nối tới cơ sở dữ liệu thành công!");
 
-        await sequelize.sync(); // Đồng bộ hóa các mô hình với cơ sở dữ liệu
-        console.log("Các models đã được đồng bộ!");
+        // await sequelize.sync(); // Đồng bộ hóa các mô hình với cơ sở dữ liệu
+        // console.log("Các models đã được đồng bộ!");
     } catch (error) {
         console.error("Lỗi kết nối tới cơ sở dữ liệu:", error);
     }
