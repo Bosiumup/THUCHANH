@@ -4,8 +4,11 @@ let modelGetGroupProduct = async () => {
     let [rows, fields] = await pool.query("SELECT * FROM nhom");
     return rows;
 };
-let modelGetAllProduct = async () => {
-    let [rows, fields] = await pool.query("SELECT * FROM sanpham");
+let modelGetAllProductByGroup = async (idnhom) => {
+    let [rows, fields] = await pool.query(
+        "SELECT * FROM sanpham WHERE idnhom = ?",
+        [idnhom]
+    );
     return rows;
 };
 
@@ -19,6 +22,6 @@ let modelGetProductById = async (masp) => {
 
 export default {
     modelGetGroupProduct,
-    modelGetAllProduct,
+    modelGetAllProductByGroup,
     modelGetProductById,
 };

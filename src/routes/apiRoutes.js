@@ -29,7 +29,10 @@ const initApiRoutes = (app) => {
     // Hiển thị nhóm
     router.get("/api/groupProduct", apiProductController.apiGetGroupProduct);
     // Hiển thị danh sách các sản phẩm
-    router.get("/api/listProduct", apiProductController.apiGetAllProduct);
+    router.get(
+        "/api/listProductByGroup/:idnhom",
+        apiProductController.apiGetAllProductByGroup
+    );
     // Hiển thị chi tiết sản phẩm cụ thể
     router.get(
         "/api/detailProduct/:masp",

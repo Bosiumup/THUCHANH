@@ -17,9 +17,10 @@ let apiGetGroupProduct = async (req, res) => {
     }
 };
 
-let apiGetAllProduct = async (req, res) => {
+let apiGetAllProductByGroup = async (req, res) => {
     try {
-        let products = await productModel.modelGetAllProduct();
+        let idnhom = req.params.idnhom;
+        let products = await productModel.modelGetAllProductByGroup(idnhom);
         return res.json({
             success: true,
             errCode: 1,
@@ -36,8 +37,8 @@ let apiGetAllProduct = async (req, res) => {
 };
 
 let apiGetDetailProduct = async (req, res) => {
-    let masp = req.params.masp;
     try {
+        let masp = req.params.masp;
         let product = await productModel.modelGetProductById(masp);
         return res.json({
             success: true,
@@ -53,4 +54,9 @@ let apiGetDetailProduct = async (req, res) => {
         });
     }
 };
-export default { apiGetGroupProduct, apiGetAllProduct, apiGetDetailProduct };
+
+export default {
+    apiGetGroupProduct,
+    apiGetAllProductByGroup,
+    apiGetDetailProduct,
+};

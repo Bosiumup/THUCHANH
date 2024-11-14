@@ -11,7 +11,7 @@ import sequelize from "./config/sequelizeDB";
 import cors from "cors";
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000" }));
 dotenv.config();
 const port = process.env.PORT;
 app.use(bodyParser.urlencoded({ extended: false }));
